@@ -1,0 +1,10 @@
+*~
+applet
+public/files
+#*
+*#
+.*
+*.lock
+config.yaml
+camera.jpg
+
