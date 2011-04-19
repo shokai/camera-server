@@ -58,6 +58,6 @@ loop do
     url = nil
   end
   break unless params[:loop]
-  sleep params[:interval].to_i
+  sleep params[:interval].to_f
 end
 
