@@ -1,15 +1,24 @@
 !!!XHTML
 %html
+  - @title = 'img-server test'
   %head
-    %title img-server test
+    %title= @title
     %script{:type => 'text/javascript', :src => 'jquery.js'}
     %script{:type => 'text/javascript', :src => 'img-server.js'}
-    %script{:type => 'text/javascript', :src => 'main.js'}
+    :javascript
+      $(function(){
+        ImgServer.start($('div#camera_img'), 'http://localhost:8080', 1000);
+      });
+    :css
+      div#camera_img {
+        height : 240px;
+        width : 320px;
+      }
   %body
-    %h1 img-server test
+    %h1= @title
     %div#camera_img
       %span#view
       %span#tmp
     %hr
-      - url = 'https://github.com/shokai/img-server'
-      %a{:href => url} #{url}
+      - @url = 'https://github.com/shokai/img-server'
+      %a{:href => @url} #{@url}
