@@ -8,7 +8,6 @@ CameraServer.init = function(display_obj){
 CameraServer.do_reload = function(display_obj, img_url, delay_msec){
     var img = $('<img>').attr('src',img_url+'?'+new Date().getTime());
     var load_err_timer = setTimeout(function(){
-        console.log('load_err_timer');
         CameraServer.do_reload(display_obj, img_url, delay_msec);
     }, 10000)
     img.load(function(){
