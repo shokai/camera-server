@@ -40,10 +40,8 @@ loop do
     now_mtime = File.mtime(f).to_i
     if now_mtime != last_mtime
       last_mtime = now_mtime
-      tmp_file = File.dirname(__FILE__)+'/tmp'
-      FileUtils.cp(f, tmp_file)
       url = URI.parse(params[:url])
-      data = File.open(tmp_file).read
+      data = File.open(f).read
       Net::HTTP::start(url.host, url.port){|http|
         res = http.post(url.path, data)
         puts res.body
