@@ -5,8 +5,6 @@ require 'FileUtils'
 require 'net/http'
 require 'uri'
 
-$KCODE = 'u'
-
 parser = ArgsParser.parser
 parser.bind(:loop, :l, 'do loop')
 parser.bind(:file, :f, 'upload file')
@@ -16,7 +14,7 @@ parser.bind(:help, :h, 'show help')
 first, params = parser.parse(ARGV)
 
 
-unless parser.has_param(:file) or parser.has_param(:help)
+if !parser.has_param(:file) or parser.has_option(:help)
   puts parser.help
   exit
 end
