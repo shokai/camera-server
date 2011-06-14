@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <title>img-server test</title>
+    <title>camera-server test</title>
     <script src='jquery.js' type='text/javascript'></script>
-    <script src='img-server.js' type='text/javascript'></script>
+    <script src='camera-server.js' type='text/javascript'></script>
     <script type='text/javascript'>
       //<![CDATA[
         $(function(){
-          ImgServer.start($('div#camera_img'), 'http://localhost:8080', 1000);
+          CameraServer.start($('div#camera_img'), 'http://localhost:8080', 1000);
         });
       //]]>
     </script>
@@ -21,10 +21,10 @@
     </style>
   </head>
   <body>
-    <h1>img-server test</h1>
+    <h1>camera-server test</h1>
     <div id='camera_img'></div>
     <hr>
-      <a href='https://github.com/shokai/img-server'>https://github.com/shokai/img-server</a>
+      <a href='https://github.com/shokai/camera-server'>https://github.com/shokai/camera-server</a>
     </hr>
   </body>
 </html>
