@@ -3,7 +3,8 @@ require 'rubygems'
 require 'eventmachine'
 require 'evma_httpserver'
 
-PORT = 8080
+port = 8080
+port = ARGV.first.to_i if ARGV.size > 0
 @@img = 'no image'
 
 class Handler < EM::Connection
@@ -31,7 +32,7 @@ class Handler < EM::Connection
 end
 
 EM::run do
-  EM::start_server('0.0.0.0', PORT, Handler)
+  EM::start_server('0.0.0.0', port, Handler)
   puts 'starting server..'
-  puts " => port #{PORT}"
+  puts " => port #{port}"
 end
