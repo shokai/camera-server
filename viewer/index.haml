@@ -1,13 +1,15 @@
 !!!XHTML
 %html
-  - @title = 'camera-server test'
+  - @title = 'camera-server'
   %head
     %title= @title
     %script{:type => 'text/javascript', :src => 'jquery.js'}
     %script{:type => 'text/javascript', :src => 'camera-server.js'}
     :javascript
       $(function(){
-        CameraServer.start($('div#camera_img'), 'http://localhost:8080', 1000);
+        var camera_url = 'http://localhost:8785/test'
+        $('#camera_url').html(camera_url);
+        CameraServer.start($('div#camera_img'), camera_url, 1000); // dom, camera, interval
       });
     :css
       div#camera_img {
@@ -17,6 +19,7 @@
   %body
     %h1= @title
     %div#camera_img
+    %div#camera_url
     %hr
       - @url = 'https://github.com/shokai/camera-server'
       %a{:href => @url} #{@url}

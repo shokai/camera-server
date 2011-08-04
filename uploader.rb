@@ -8,25 +8,17 @@ require 'uri'
 parser = ArgsParser.parser
 parser.bind(:loop, :l, 'do loop')
 parser.bind(:file, :f, 'upload file')
-parser.bind(:interval, :i, 'uplaod interval : default 5 (sec)')
-parser.bind(:url, :u, 'upload url : default http://localhost:8080/')
+parser.bind(:interval, :i, 'uplaod interval (sec)', 5)
+parser.bind(:url, :u, 'upload url', 'http://localhost:8785/test')
 parser.bind(:help, :h, 'show help')
 first, params = parser.parse(ARGV)
 
+p params
 
 if !parser.has_param(:file) or parser.has_option(:help)
   puts parser.help
   exit
 end
-
-{
-  :interval => 5,
-  :url => 'http://localhost:8080/'
-}.each{|k,v|
-  params[k] = v unless params[k]
-}
-
-p params
 
 f = params[:file]
 unless File.exists? f

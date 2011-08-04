@@ -3,9 +3,9 @@ require 'rubygems'
 require 'eventmachine'
 require 'evma_httpserver'
 
-port = 8080
+port = 8785
 port = ARGV.first.to_i if ARGV.size > 0
-@@img = 'no image'
+@@imgs = Hash.new
 
 class Handler < EM::Connection
   include EM::HttpServer
@@ -16,11 +16,11 @@ class Handler < EM::Connection
     puts " #{@http_post_content.size} bytes" if @http_post_content
     begin
       if @http_request_method == 'GET'
-        res.content = @@img
+        res.content = @@imgs[@http_path_info]
         res.status = 200
       elsif @http_request_method == 'POST'
-        @@img = @http_post_content
-        res.content = @@img.size.to_s
+        @@imgs[@http_path_info] = @http_post_content
+        res.content = @http_post_content.size.to_s
         res.status = 200
       end
     rescue => e
