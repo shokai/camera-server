@@ -3,10 +3,12 @@ require 'rubygems'
 require 'eventmachine'
 require 'evma_httpserver'
 require 'ArgsParser'
+require 'json'
 
 parser = ArgsParser.parser
 parser.bind(:port, :p, 'http port', 8785)
 parser.bind(:max_size, :s, 'max image size (byte)', 1000000)
+parser.bind(:index, :i, 'index page name', '/index.json')
 parser.bind(:help, :h, 'show help')
 @@first, @@params = parser.parse(ARGV)
 
@@ -25,22 +27,31 @@ class Handler < EM::Connection
     puts "[http] #{@http_request_method} #{@http_path_info}"
     puts " #{@http_post_content.size} bytes" if @http_post_content
     begin
-      if @http_request_method == 'GET'
-        unless @@imgs[@http_path_info]
-          res.content = 'not found'
-          res.status = 404
-        else
-          res.content = @@imgs[@http_path_info]
+      if @http_path_info == @@params[:index]
+        if @http_request_method == 'GET'
+          res.content = @@imgs.map{|k,v|
+            {:path => k, :size => v.size}
+          }.to_json
           res.status = 200
         end
-      elsif @http_request_method == 'POST'
-        if @http_post_content.size > @@params[:max_size].to_i
-          res.content = 'error : size over'
-          res.status = 400
-        else
+      else
+        if @http_request_method == 'GET'
+          unless @@imgs[@http_path_info]
+            res.content = 'not found'
+            res.status = 404
+          else
+            res.content = @@imgs[@http_path_info]
+            res.status = 200
+          end
+        elsif @http_request_method == 'POST'
+          if @http_post_content.size > @@params[:max_size].to_i
+            res.content = 'error : size over'
+            res.status = 400
+          else
           @@imgs[@http_path_info] = @http_post_content
-          res.content = @http_post_content.size.to_s
-          res.status = 200
+            res.content = @http_post_content.size.to_s
+            res.status = 200
+          end
         end
       end
     rescue => e
