@@ -45,7 +45,7 @@ head
     <script src='camera-server.js' type='text/javascript' />
     <script type='text/javascript'>
         $(function(){
-          CameraServer.start($('div#camera_img'), 'http://localhost:8785/camera_1', 1000);
+          new CameraServer().start($('div#camera_img'), 'http://localhost:8785/camera_1', 1000);
         });
     </script>
 
