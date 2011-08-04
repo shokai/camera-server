@@ -2,9 +2,19 @@
 require 'rubygems'
 require 'eventmachine'
 require 'evma_httpserver'
+require 'ArgsParser'
 
-port = 8785
-port = ARGV.first.to_i if ARGV.size > 0
+parser = ArgsParser.parser
+parser.bind(:port, :p, 'http port', 8785)
+parser.bind(:max_size, :s, 'max image size (byte)', 1000000)
+parser.bind(:help, :h, 'show help')
+@@first, @@params = parser.parse(ARGV)
+
+if parser.has_option(:help)
+  puts parser.help
+  exit
+end
+
 @@imgs = Hash.new
 
 class Handler < EM::Connection
@@ -16,12 +26,22 @@ class Handler < EM::Connection
     puts " #{@http_post_content.size} bytes" if @http_post_content
     begin
       if @http_request_method == 'GET'
-        res.content = @@imgs[@http_path_info]
-        res.status = 200
+        unless @@imgs[@http_path_info]
+          res.content = 'not found'
+          res.status = 404
+        else
+          res.content = @@imgs[@http_path_info]
+          res.status = 200
+        end
       elsif @http_request_method == 'POST'
-        @@imgs[@http_path_info] = @http_post_content
-        res.content = @http_post_content.size.to_s
-        res.status = 200
+        if @http_post_content.size > @@params[:max_size].to_i
+          res.content = 'error : size over'
+          res.status = 400
+        else
+          @@imgs[@http_path_info] = @http_post_content
+          res.content = @http_post_content.size.to_s
+          res.status = 200
+        end
       end
     rescue => e
       STDERR.puts e
@@ -32,7 +52,7 @@ class Handler < EM::Connection
 end
 
 EM::run do
-  EM::start_server('0.0.0.0', port, Handler)
+  EM::start_server('0.0.0.0', @@params[:port].to_i, Handler)
   puts 'starting server..'
-  puts " => port #{port}"
+  puts " => port #{@@params[:port].to_i}"
 end
