@@ -9,7 +9,9 @@
       $(function(){
         var camera_url = 'http://localhost:8785/test'
         $('#camera_url').html(camera_url);
-        CameraServer.start($('div#camera_img'), camera_url, 1000); // dom, camera, interval
+
+        // dom_object, camera_url, interval_sec
+        new CameraServer().start($('div#camera_img'), camera_url, 1000);
       });
     :css
       div#camera_img {
