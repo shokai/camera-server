@@ -1,0 +1,27 @@
+!!!XHTML
+- @title = 'camera-server multiview'
+- @server = 'http://localhost:8785'
+- @index = @server+'/index.json'
+%html
+  %head
+    %title= @title
+    %script{:type => 'text/javascript', :src => '../jquery.js'}
+    %script{:type => 'text/javascript', :src => '../camera-server.js'}
+    %script{:type => 'text/javascript', :src => 'main.js'}
+    :javascript
+      var server = "#{@server}";
+      var index = "#{@index}";
+    :css
+      div.camera {
+        float : left;
+      }
+      div#footer {
+        clear : both;
+      }
+  %body
+    %h1= @title
+    %div#cameras
+    %div#footer
+      %hr
+        - @url = 'https://github.com/shokai/camera-server'
+        %a{:href => @url} #{@url}
