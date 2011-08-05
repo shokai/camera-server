@@ -61,11 +61,13 @@ body
 Get Camera List
 ---------------
 
+get camera and binary size list.
+
 json format
 
     % curl http://localhost:8785/index.json
 
-    [{"path":"/camera_1","size":8016},{"path":"/camera_2","size":8016}]
+    [{"path":"/camera_1","size":8016},{"path":"/camera_2","size":7068}]
 
 
 
@@ -73,7 +75,7 @@ jsonp callback
 
     % curl "http://localhost:8785/index.json?jsoncallback=my_callback"
 
-    my_callback([{"path":"/camera_1","size":8016},{"path":"/camera_2","size":8016},{"path":"/test3","size":8016}]);
+    my_callback([{"path":"/camera_1","size":8016},{"path":"/camera_2","size":7068}]);
 
 
 see viewer/multiview.
