@@ -3,6 +3,7 @@ require 'rubygems'
 require 'eventmachine'
 require 'evma_httpserver'
 require 'ArgsParser'
+require 'uri'
 require 'json'
 
 parser = ArgsParser.parser
@@ -26,12 +27,24 @@ class Handler < EM::Connection
     res = EM::DelegatedHttpResponse.new(self)
     puts "[http] #{@http_request_method} #{@http_path_info}"
     puts " #{@http_post_content.size} bytes" if @http_post_content
+    puts "query_str :"
+    begin
+      p query = Hash[*(@http_query_string.to_s.split('&').map{|i|
+                         j = i.split('=')
+                         [j[0].to_sym, URI.decode(j[1])]
+                       }).flatten]
+    rescue => e
+      query = {}
+      STDERR.puts e
+      STDERR.puts 'http_query_string parse error'
+    end
     begin
       if @http_path_info == @@params[:index]
         if @http_request_method == 'GET'
           res.content = @@imgs.map{|k,v|
             {:path => k, :size => v.size}
           }.to_json
+          res.content = "#{query[:jsoncallback]}(#{res.content});" if query[:jsoncallback].to_s.size > 0
           res.status = 200
         end
       else
