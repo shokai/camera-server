@@ -29,6 +29,8 @@ Run Server
 Run uploader
 ------------
 
+upload "camera_1"
+
     % ruby uplaoder.rb --help
     % ruby uploader.rb -u http://localhost:8785/camera_1 -f camera/camera.jpg -i 1 -l
 
@@ -37,7 +39,7 @@ Run uploader
 Display camera image
 --------------------
 
-start camera-server.js
+start camera-server.js to display "camera_1"
 
 head
 
@@ -53,3 +55,25 @@ head
 body
 
     <div id='camera_img'></div>
+
+
+
+Get Camera List
+---------------
+
+json format
+
+    % curl http://localhost:8785/index.json
+
+    [{"path":"/camera_1","size":8016},{"path":"/camera_2","size":8016}]
+
+
+
+jsonp callback
+
+    % curl "http://localhost:8785/index.json?jsoncallback=my_callback"
+
+    my_callback([{"path":"/camera_1","size":8016},{"path":"/camera_2","size":8016},{"path":"/test3","size":8016}]);
+
+
+see viewer/multiview.
