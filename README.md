@@ -32,7 +32,7 @@ Run uploader
 upload "camera_1"
 
     % ruby uplaoder.rb --help
-    % ruby uploader.rb -u http://localhost:8785/camera_1 -f camera/camera.jpg -i 1 -l
+    % ruby uploader.rb -u http://localhost:8785/camera_1 -f camera/camera.jpg -interval 1 -loop
 
 
 
@@ -57,6 +57,8 @@ body
     <div id='camera_img'></div>
 
 
+see "viewer/simple/index.html"
+
 
 Get Camera List
 ---------------
@@ -78,4 +80,4 @@ jsonp callback
     my_callback([{"path":"/camera_1","size":8016},{"path":"/camera_2","size":7068}]);
 
 
-see viewer/multiview.
+see "viewer/multiview/index.html"
